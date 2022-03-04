@@ -371,18 +371,21 @@ impl<H, N, E: Environment<H, N>> VotingRound<H, N, E> where
 
 		match message {
 			Message::Prevote(prevote) => {
+				trace!(target: "afg", "Round {}: Got prevote message", self.round_number());
 				let import_result = self.votes.import_prevote(&*self.env, prevote, id, signature)?;
 				if let ImportResult { equivocation: Some(e), .. } = import_result {
 					self.env.prevote_equivocation(self.votes.number(), e);
 				}
 			}
 			Message::Precommit(precommit) => {
+				trace!(target: "afg", "Round {}: Got precommit message", self.round_number());
 				let import_result = self.votes.import_precommit(&*self.env, precommit, id, signature)?;
 				if let ImportResult { equivocation: Some(e), .. } = import_result {
 					self.env.precommit_equivocation(self.votes.number(), e);
 				}
 			}
 			Message::PrimaryPropose(primary) => {
+				trace!(target: "afg", "Round {}: Got primary proposal message", self.round_number());
 				let primary_id = self.votes.primary_voter().0.clone();
 				// note that id here refers to the party which has cast the vote
 				// and not the id of the party which has received the vote message.
