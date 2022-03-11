@@ -736,6 +736,7 @@ impl<H, N, E: Environment<H, N>> VotingRound<H, N, E> where
 					);
 					let _ = self.finalized_sender.unbounded_send(finalized);
 					self.best_finalized = Some(commit);
+					debug!(target: "afg", "Sending Commit message for round {}", self.votes.number());
 				}
 			}
 		}
